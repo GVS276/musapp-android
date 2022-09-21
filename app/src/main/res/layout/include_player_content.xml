@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentPlayer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/padding_parent_horizontal"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/subtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/subtract"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/thumb"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/thumb_big"
+        app:layout_constraintTop_toBottomOf="@+id/subtract"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:textColor="?attr/colorText"
+        android:textSize="@dimen/text_item_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/thumb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:drawablePadding="5dp"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:textColor="?attr/colorText"
+        android:textSize="@dimen/text_sub_item_size"
+        app:layout_constraintTop_toBottomOf="@+id/artist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <SeekBar
+        android:id="@+id/audioSeekBar"
+        style="@style/AudioSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:progress="0"
+        app:layout_constraintBottom_toTopOf="@+id/timeContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/timeContainer"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/playOrPause"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/currentDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:textColor="?attr/colorText"
+            android:textSize="@dimen/text_sub_item_size" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/totalDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="?attr/colorText"
+            android:textSize="@dimen/text_sub_item_size" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/random"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@drawable/random"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/previous"
+        app:layout_constraintBottom_toBottomOf="@id/previous" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/previous"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:src="@drawable/previous"
+        app:layout_constraintEnd_toStartOf="@+id/playOrPause"
+        app:layout_constraintTop_toTopOf="@id/playOrPause"
+        app:layout_constraintBottom_toBottomOf="@id/playOrPause" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/playOrPause"
+        android:background="@drawable/circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/play"
+        android:tint="?attr/colorPlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/next"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        android:src="@drawable/next"
+        app:layout_constraintStart_toEndOf="@+id/playOrPause"
+        app:layout_constraintTop_toTopOf="@id/playOrPause"
+        app:layout_constraintBottom_toBottomOf="@id/playOrPause" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/repeat"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@drawable/repeat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/next"
+        app:layout_constraintBottom_toBottomOf="@id/next" />
+</androidx.constraintlayout.widget.ConstraintLayout>

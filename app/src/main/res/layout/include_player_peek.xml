@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/peekPlayer"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/peek_player_size"
+    android:paddingVertical="@dimen/padding_item_vertical"
+    android:background="?attr/colorPrimary"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/peekArtist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_item_horizontal"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:textSize="@dimen/text_item_size"
+        android:textStyle="bold"
+        android:textColor="?attr/colorText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/peekPlayOrPause" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/peekTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_item_horizontal"
+        android:drawablePadding="5dp"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:textSize="@dimen/text_sub_item_size"
+        android:textColor="?attr/colorText"
+        app:layout_constraintTop_toBottomOf="@+id/peekArtist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/peekPlayOrPause"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/peekPlayOrPause"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_item_horizontal"
+        android:paddingVertical="@dimen/padding_item_vertical"
+        android:src="@drawable/play"
+        android:tint="?attr/colorText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

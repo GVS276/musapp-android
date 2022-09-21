@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_bar_size">48dp</dimen>
+    <dimen name="toolbar_title_padding">15dp</dimen>
+
+    <dimen name="header_bar_size">300dp</dimen>
+    <dimen name="placeholder_small_size">45dp</dimen>
+    <dimen name="placeholder_high_size">120dp</dimen>
+    <dimen name="peek_player_size">70dp</dimen>
+    <dimen name="loading_dialog_size">150dp</dimen>
+
+    <dimen name="padding_parent_horizontal">30dp</dimen>
+    <dimen name="padding_parent_vertical">30dp</dimen>
+
+    <dimen name="padding_item_horizontal">15dp</dimen>
+    <dimen name="padding_item_vertical">10dp</dimen>
+
+    <dimen name="spacer_vertical">10dp</dimen>
+
+    <dimen name="radius_element">10dp</dimen>
+
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="text_high_size">18sp</dimen>
+    <dimen name="text_very_size">12sp</dimen>
+    <dimen name="text_sub_size">14sp</dimen>
+
+    <dimen name="text_item_size">16sp</dimen>
+    <dimen name="text_sub_item_size">14sp</dimen>
+
+    <dimen name="edit_height">40dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+</resources>

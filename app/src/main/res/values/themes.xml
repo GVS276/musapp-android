@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MusApp" parent="NoBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/toolbar_light</item>
+        <item name="colorPrimaryVariant">@color/toolbar_light</item>
+        <item name="colorOnPrimary">@color/background_light</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/accentColor</item>
+        <item name="colorSecondaryVariant">@color/accentColor</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorControlNormal">@color/text_light</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">?attr/colorOnPrimary</item>
+        <item name="colorText">@color/text_light</item>
+        <item name="colorThumb">@color/thumb_light</item>
+        <item name="colorPlay">@color/background_light</item>
+        <item name="colorPlaying">@color/playing_light</item>
+    </style>
+</resources>

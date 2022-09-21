@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../private/var/folders/24/6rbr8glx3rn1_55_frzg7x680000gn/T/drawable-temp/fake_of_seekbar_thumb_material_anim.xml" value="0.1805" />
+        <entry key="../../.gradle/caches/transforms-3/f1498b920df879287edebcf3bd0a58fb/transformed/appcompat-1.4.2/res/drawable-v21/abc_action_bar_item_background_material.xml" value="0.1805" />
+        <entry key="../../.gradle/caches/transforms-3/f1498b920df879287edebcf3bd0a58fb/transformed/appcompat-1.4.2/res/layout/abc_search_view.xml" value="0.14492753623188406" />
+        <entry key="../../Library/Android/sdk/platforms/android-32/data/res/drawable/control_background_32dp_material.xml" value="0.1805" />
+        <entry key="../../Library/Android/sdk/platforms/android-32/data/res/drawable/seekbar_track_material.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_add.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_album.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_artist.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_back.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_close.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_delete.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_down.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_explicit.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_finish.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_menu.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_my.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_next.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_search.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_settings.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/action_up.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/album.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/audio.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_audio_not_playing.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_audio_playing.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_button.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_edit.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_loading.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/background_player.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/circle.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/circle_pause.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/circle_play.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/item_click.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/logo_vk.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/music.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/my.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/next.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/pause.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/placeholder.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/play.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/previous.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/random.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/random_on.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/repeat.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/repeat_on.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/scrubber_control.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/sound.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/subtract.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/thumb.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/thumb_album.xml" value="0.1805" />
+        <entry key="app/src/main/res/drawable/thumb_big.xml" value="0.1805" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_loading.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_menu.xml" value="0.22313232421875" />
+        <entry key="app/src/main/res/layout/fragment_album.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_artist.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_artist_albums.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/fragment_artist_tracks.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.311083984375" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.14175724637681159" />
+        <entry key="app/src/main/res/layout/fragment_my_music.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_player.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_dialog_artists.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/include_dialog_menu_artists.xml" value="0.29569244384765625" />
+        <entry key="app/src/main/res/layout/include_dialog_menu_content.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_dialog_menu_peek.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_mini_player.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/include_player_content.xml" value="0.2868972778320313" />
+        <entry key="app/src/main/res/layout/include_player_mini.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_player_peek.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/include_player_sheet.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_album.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_album_audio.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_artist.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_audio.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/menu_items_main.xml" value="0.27590332031250003" />
+        <entry key="app/src/main/res/layout/menu_items_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/search_view.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/menu/menu_search.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

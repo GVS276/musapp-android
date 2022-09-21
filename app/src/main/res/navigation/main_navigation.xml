@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation">
+
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.vg276.musapp.ui.LoginViewFragment"
+        android:label="Login Fragment"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="com.vg276.musapp.ui.MainViewFragment"
+        android:label="Audio Main Fragment"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@+id/SearchViewFragment"
+        android:name="com.vg276.musapp.ui.screens.SearchViewFragment"
+        android:label="Search Fragment"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/MyMusicFragment"
+        android:name="com.vg276.musapp.ui.screens.MyMusicFragment"
+        android:label="My Music Fragment"
+        tools:layout="@layout/fragment_my_music" />
+
+    <fragment
+        android:id="@+id/ArtistViewFragment"
+        android:name="com.vg276.musapp.ui.screens.artist.ArtistViewFragment"
+        android:label="Artist Fragment"
+        tools:layout="@layout/fragment_artist" />
+
+    <fragment
+        android:id="@+id/ArtistTracksViewFragment"
+        android:name="com.vg276.musapp.ui.screens.artist.ArtistTracksViewFragment"
+        android:label="Tracks Fragment"
+        tools:layout="@layout/fragment_artist_tracks" />
+
+    <fragment
+        android:id="@+id/AlbumViewFragment"
+        android:name="com.vg276.musapp.ui.screens.artist.AlbumViewFragment"
+        android:label="Album Fragment"
+        tools:layout="@layout/fragment_album" />
+
+    <fragment
+        android:id="@+id/ArtistAlbumsViewFragment"
+        android:name="com.vg276.musapp.ui.screens.artist.ArtistAlbumsViewFragment"
+        android:label="Albums Fragment"
+        tools:layout="@layout/fragment_artist_albums" />
+
+</navigation>
