@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.vg276.musapp.base.BaseActivity
-import com.vg276.musapp.databinding.ActivityMainBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.dialogs.MenuDialog
 import com.vg276.musapp.utils.SettingsPreferences
@@ -17,20 +16,17 @@ import com.vg276.musapp.view.LoadingView
 class MainActivity: BaseActivity()
 {
     private lateinit var settings: SettingsPreferences
-    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.systemBarsTransparent()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        initPlayer()
 
         navController = findNavController(R.id.nav_host_fragment)
 
         initGraph()
-        initPlayer(binding.root)
         initBackPressed()
 
         if (intent != null && intent.hasExtra(INTENT_TYPE))

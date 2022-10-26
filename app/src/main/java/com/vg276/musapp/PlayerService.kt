@@ -329,7 +329,7 @@ class PlayerService: LifecycleService()
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 {
-                    stopForeground(notificationId)
+                    stopForeground(STOP_FOREGROUND_REMOVE)
                 } else {
                     stopForeground(false)
                 }

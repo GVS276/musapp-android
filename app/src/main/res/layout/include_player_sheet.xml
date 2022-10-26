@@ -11,13 +11,17 @@
     app:behavior_peekHeight="@dimen/peek_player_size"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <include layout="@layout/include_player_content"
+    <include
+        android:id="@+id/includeContentPlayer"
+        layout="@layout/include_player_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <include layout="@layout/include_player_peek"
+    <include
+        android:id="@+id/includePeekPlayer"
+        layout="@layout/include_player_peek"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

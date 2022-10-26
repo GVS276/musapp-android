@@ -10,13 +10,10 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vg276.musapp.*
+import com.vg276.musapp.databinding.ActivityMainBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.models.AudioPlayerModel
 import com.vg276.musapp.utils.*
@@ -28,87 +25,47 @@ abstract class BaseActivity: AppCompatActivity()
     val audioPlayer: AudioPlayerModel by viewModels()
     var playerService: PlayerService? = null
 
-    private lateinit var player: ConstraintLayout
-    private lateinit var playerContent: ConstraintLayout
-    private lateinit var playerSubtract: AppCompatImageView
-    private lateinit var playerThumb: AppCompatImageView
-    private lateinit var playerArtist: AppCompatTextView
-    private lateinit var playerTitle: AppCompatTextView
-    private lateinit var playerTime: AppCompatTextView
-    private lateinit var playerTotalTime: AppCompatTextView
-    private lateinit var playerSeekBar: SeekBar
-    private lateinit var playerButtonPlayOrPause: AppCompatImageButton
-    private lateinit var playerButtonPrevious: AppCompatImageButton
-    private lateinit var playerButtonNext: AppCompatImageButton
-    private lateinit var playerButtonRandom: AppCompatImageButton
-    private lateinit var playerButtonRepeat: AppCompatImageButton
-
-    private lateinit var playerPeek: ConstraintLayout
-    private lateinit var playerPeekArtist: AppCompatTextView
-    private lateinit var playerPeekTitle: AppCompatTextView
-    private lateinit var playerPeekButtonPlayOrPause: AppCompatImageButton
-
-    private lateinit var playerOverlay: View
+    private lateinit var binding: ActivityMainBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
-    protected fun initPlayer(view: View)
+    protected fun initPlayer()
     {
-        // full
-        player = view.findViewById(R.id.player)
-        playerContent = player.findViewById(R.id.contentPlayer)
-        playerContent.alpha = 0f
+        // init
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        playerSubtract = player.findViewById(R.id.subtract)
-        playerThumb = player.findViewById(R.id.thumb)
-        playerArtist = player.findViewById(R.id.artist)
-        playerTitle = player.findViewById(R.id.title)
+        // settings
+        binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = 0f
+        binding.includePlayerSheet.includePeekPlayer.peekPlayer.alpha = 1f
 
-        playerTime = player.findViewById(R.id.currentDuration)
-        playerTotalTime = player.findViewById(R.id.totalDuration)
-        playerSeekBar = player.findViewById(R.id.audioSeekBar)
-
-        playerButtonPlayOrPause = player.findViewById(R.id.playOrPause)
-        playerButtonPrevious = player.findViewById(R.id.previous)
-        playerButtonNext = player.findViewById(R.id.next)
-
-        playerButtonRandom = player.findViewById(R.id.random)
-        playerButtonRandom.setImageResource(when(isRandomAudio(baseContext)) {
+        binding.includePlayerSheet.includeContentPlayer.random.setImageResource(when(isRandomAudio(baseContext)) {
             true -> R.drawable.random_on
             false -> R.drawable.random
         })
 
-        playerButtonRepeat = player.findViewById(R.id.repeat)
-        playerButtonRepeat.setImageResource(when(isRepeatAudio(baseContext)) {
+        binding.includePlayerSheet.includeContentPlayer.repeat.setImageResource(when(isRepeatAudio(baseContext)) {
             true -> R.drawable.repeat_on
             false -> R.drawable.repeat
         })
 
-        // peek
-        playerPeek = player.findViewById(R.id.peekPlayer)
-        playerPeek.alpha = 1f
-
-        playerPeekArtist = player.findViewById(R.id.peekArtist)
-        playerPeekTitle = player.findViewById(R.id.peekTitle)
-        playerPeekButtonPlayOrPause = player.findViewById(R.id.peekPlayOrPause)
-
         // sheet
-        bottomSheetBehavior = BottomSheetBehavior.from(player)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.includePlayerSheet.player)
         bottomSheetBehavior.apply {
             addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED,
                         BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                            if (playerPeek.visibility != View.GONE)
+                            if (binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility != View.GONE)
                             {
-                                playerPeek.visibility = View.GONE
+                                binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility = View.GONE
                                 startProgress()
                             }
                         }
                         else -> {
-                            if (playerPeek.visibility != View.VISIBLE)
+                            if (binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility != View.VISIBLE)
                             {
-                                playerPeek.visibility = View.VISIBLE
+                                binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility = View.VISIBLE
                                 removeProgress()
                             }
                         }
@@ -116,15 +73,14 @@ abstract class BaseActivity: AppCompatActivity()
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    playerPeek.alpha = 1 - slideOffset
-                    playerContent.alpha = min(1f, if (slideOffset >= 0.1) slideOffset else 0f)
+                    binding.includePlayerSheet.includePeekPlayer.peekPlayer.alpha = 1 - slideOffset
+                    binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = min(1f, if (slideOffset >= 0.1) slideOffset else 0f)
                 }
             })
         }
 
         // overlay
-        playerOverlay = view.findViewById(R.id.playerOverlay)
-        playerOverlay.applyWindowInsets { v, insets ->
+        binding.playerOverlay.applyWindowInsets { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
             // overlay
@@ -140,18 +96,11 @@ abstract class BaseActivity: AppCompatActivity()
             }
 
             // content player
-            if (this::playerContent.isInitialized)
-            {
-                playerContent.updatePadding(bottom = bars.bottom)
-            }
-
-            if (this::playerSubtract.isInitialized)
-            {
-                playerSubtract.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    val sb = bars.top + 10
-                    val nb = bars.bottom
-                    topMargin = if (nb >= sb) nb else sb
-                }
+            binding.includePlayerSheet.includeContentPlayer.contentPlayer.updatePadding(bottom = bars.bottom)
+            binding.includePlayerSheet.includeContentPlayer.subtract.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                val sb = bars.top + 10
+                val nb = bars.bottom
+                topMargin = if (nb >= sb) nb else sb
             }
 
             insets
@@ -169,9 +118,9 @@ abstract class BaseActivity: AppCompatActivity()
                 {
                     state = BottomSheetBehavior.STATE_EXPANDED
 
-                    playerPeek.visibility = View.GONE
-                    playerPeek.alpha = 0f
-                    playerContent.alpha = 1f
+                    binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility = View.GONE
+                    binding.includePlayerSheet.includePeekPlayer.peekPlayer.alpha = 0f
+                    binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = 1f
 
                     startProgress()
                 }
@@ -188,9 +137,9 @@ abstract class BaseActivity: AppCompatActivity()
                 {
                     state = BottomSheetBehavior.STATE_COLLAPSED
 
-                    playerPeek.visibility = View.VISIBLE
-                    playerPeek.alpha = 1f
-                    playerContent.alpha = 0f
+                    binding.includePlayerSheet.includePeekPlayer.peekPlayer.visibility = View.VISIBLE
+                    binding.includePlayerSheet.includePeekPlayer.peekPlayer.alpha = 1f
+                    binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = 0f
 
                     removeProgress()
                 }
@@ -209,17 +158,14 @@ abstract class BaseActivity: AppCompatActivity()
 
     private fun setAudioButtonsRes(res: Int)
     {
-        playerPeekButtonPlayOrPause.setImageResource(res)
-        playerButtonPlayOrPause.setImageResource(res)
+        binding.includePlayerSheet.includePeekPlayer.peekPlayOrPause.setImageResource(res)
+        binding.includePlayerSheet.includeContentPlayer.playOrPause.setImageResource(res)
     }
 
     private fun setAudioProgress(ms: Long)
     {
-        if (this::playerSeekBar.isInitialized)
-        {
-            val correct = abs(ms / 1000L)
-            playerSeekBar.progress = correct.toInt()
-        }
+        val correct = abs(ms / 1000L)
+        binding.includePlayerSheet.includeContentPlayer.audioSeekBar.progress = correct.toInt()
     }
 
     private fun repeatAudio(value: Boolean)
@@ -227,7 +173,7 @@ abstract class BaseActivity: AppCompatActivity()
         val settings = SettingsPreferences(baseContext)
         settings.put(KEY_REPEAT, value)
 
-        playerButtonRepeat.setImageResource(when(value) {
+        binding.includePlayerSheet.includeContentPlayer.repeat.setImageResource(when(value) {
             true -> R.drawable.repeat_on
             false -> R.drawable.repeat
         })
@@ -238,7 +184,7 @@ abstract class BaseActivity: AppCompatActivity()
         val settings = SettingsPreferences(baseContext)
         settings.put(KEY_RANDOM, value)
 
-        playerButtonRandom.setImageResource(when(value) {
+        binding.includePlayerSheet.includeContentPlayer.random.setImageResource(when(value) {
             true -> R.drawable.random_on
             false -> R.drawable.random
         })
@@ -246,37 +192,32 @@ abstract class BaseActivity: AppCompatActivity()
 
     private fun setPlayed(model: AudioModel)
     {
-        if (!this::playerArtist.isInitialized)
+        if (binding.playerOverlay.visibility == View.GONE)
         {
-            return
-        }
-
-        if (playerOverlay.visibility == View.GONE)
-        {
-            playerOverlay.visibility = View.VISIBLE
-            player.visibility = View.VISIBLE
+            binding.playerOverlay.visibility = View.VISIBLE
+            binding.includePlayerSheet.player.visibility = View.VISIBLE
         }
 
         // ui
-        playerArtist.text = model.artist
-        playerTitle.text = model.title
+        binding.includePlayerSheet.includeContentPlayer.artist.text = model.artist
+        binding.includePlayerSheet.includeContentPlayer.title.text = model.title
 
-        playerPeekArtist.text = model.artist
-        playerPeekTitle.text = model.title
+        binding.includePlayerSheet.includePeekPlayer.peekArtist.text = model.artist
+        binding.includePlayerSheet.includePeekPlayer.peekTitle.text = model.title
 
-        playerSeekBar.progress = 0
-        playerSeekBar.max = model.duration
-        playerTotalTime.text = model.duration.toTime()
+        binding.includePlayerSheet.includeContentPlayer.audioSeekBar.progress = 0
+        binding.includePlayerSheet.includeContentPlayer.audioSeekBar.max = model.duration
+        binding.includePlayerSheet.includeContentPlayer.totalDuration.text = model.duration.toTime()
 
         if (model.isExplicit)
         {
-            playerTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePlayerSheet.includeContentPlayer.title.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.action_explicit,
                 0,
                 0,
                 0)
 
-            playerPeekTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePlayerSheet.includePeekPlayer.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.action_explicit,
                 0,
                 0,
@@ -284,13 +225,13 @@ abstract class BaseActivity: AppCompatActivity()
         }
         else
         {
-            playerTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePlayerSheet.includeContentPlayer.title.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
                 0,
                 0)
 
-            playerPeekTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePlayerSheet.includePeekPlayer.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
                 0,
@@ -305,41 +246,41 @@ abstract class BaseActivity: AppCompatActivity()
     private fun initPlayerListeners()
     {
         // clicks
-        playerPeek.setOnClickListener {
+        binding.includePlayerSheet.includePeekPlayer.peekPlayer.setOnClickListener {
             showPlayerSheet()
         }
 
-        playerPeekButtonPlayOrPause.setOnClickListener {
+        binding.includePlayerSheet.includePeekPlayer.peekPlayOrPause.setOnClickListener {
             playerService?.playOrPause()
         }
 
-        playerButtonPlayOrPause.setOnClickListener {
+        binding.includePlayerSheet.includeContentPlayer.playOrPause.setOnClickListener {
             playerService?.playOrPause()
         }
 
-        playerButtonPrevious.setOnClickListener {
+        binding.includePlayerSheet.includeContentPlayer.previous.setOnClickListener {
             playerService?.trackPrevious()
         }
 
-        playerButtonNext.setOnClickListener {
+        binding.includePlayerSheet.includeContentPlayer.next.setOnClickListener {
             playerService?.trackNext()
         }
 
-        playerButtonRandom.setOnClickListener {
+        binding.includePlayerSheet.includeContentPlayer.random.setOnClickListener {
             val value = isRandomAudio(baseContext)
             randomAudio(!value)
         }
 
-        playerButtonRepeat.setOnClickListener {
+        binding.includePlayerSheet.includeContentPlayer.repeat.setOnClickListener {
             val value = isRepeatAudio(baseContext)
             repeatAudio(!value)
         }
 
         // listener
-        playerSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.includePlayerSheet.includeContentPlayer.audioSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 p0?.let {
-                    playerTime.text = it.progress.toTime()
+                    binding.includePlayerSheet.includeContentPlayer.currentDuration.text = it.progress.toTime()
                 }
             }
 
