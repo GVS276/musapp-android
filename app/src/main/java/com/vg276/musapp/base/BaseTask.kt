@@ -27,7 +27,7 @@ abstract class BaseTask: IBaseTask
             1,
             10,
             TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable>(),
+            LinkedBlockingQueue(),
             Executors.defaultThreadFactory()
         )
     }

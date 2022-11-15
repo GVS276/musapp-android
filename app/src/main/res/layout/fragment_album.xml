@@ -31,7 +31,6 @@
                     android:layout_width="@dimen/placeholder_high_size"
                     android:layout_height="@dimen/placeholder_high_size"
                     android:src="@drawable/album"
-                    android:tint="?attr/colorText"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

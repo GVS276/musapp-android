@@ -1,5 +1,6 @@
 package com.vg276.musapp.ui.adapters
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.vg276.musapp.R
 import com.vg276.musapp.databinding.ItemAudioBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.models.AudioPlaying
+import com.vg276.musapp.thumb.ThumbCache
 import com.vg276.musapp.utils.toTime
 
 class AudioAdapter(
@@ -74,6 +76,25 @@ class AudioAdapter(
                 setPlaying(oldPlaying.isPlaying)
             else
                 setPlaying(false)
+
+            // thumbs
+            ThumbCache.load(model.thumb, model.albumId) { albumId, bitmap ->
+                Handler(itemView.context.mainLooper).post {
+                    if (albumId.isEmpty() && bitmap == null)
+                    {
+                        bind.thumb.setImageResource(R.drawable.thumb)
+                        return@post
+                    }
+
+                    if (albumId.isNotEmpty() && bitmap == null)
+                    {
+                        bind.thumb.setImageResource(R.drawable.thumb)
+                        return@post
+                    }
+
+                    bind.thumb.setImageBitmap(bitmap)
+                }
+            }
         }
 
         fun setPlaying(value: Boolean)

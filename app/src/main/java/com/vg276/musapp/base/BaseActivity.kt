@@ -16,6 +16,7 @@ import com.vg276.musapp.*
 import com.vg276.musapp.databinding.ActivityMainBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.models.AudioPlayerModel
+import com.vg276.musapp.thumb.ThumbCache
 import com.vg276.musapp.utils.*
 import kotlin.math.abs
 import kotlin.math.min
@@ -208,6 +209,12 @@ abstract class BaseActivity: AppCompatActivity()
         binding.includePlayerSheet.includeContentPlayer.audioSeekBar.progress = 0
         binding.includePlayerSheet.includeContentPlayer.audioSeekBar.max = model.duration
         binding.includePlayerSheet.includeContentPlayer.totalDuration.text = model.duration.toTime()
+
+        ThumbCache.getImage(model.albumId)?.let {
+            binding.includePlayerSheet.includeContentPlayer.thumb.setImageBitmap(it)
+        }.thenNull {
+            binding.includePlayerSheet.includeContentPlayer.thumb.setImageResource(R.drawable.thumb_big)
+        }
 
         if (model.isExplicit)
         {

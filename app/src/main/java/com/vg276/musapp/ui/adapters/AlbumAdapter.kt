@@ -1,11 +1,13 @@
 package com.vg276.musapp.ui.adapters
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vg276.musapp.R
 import com.vg276.musapp.databinding.ItemAlbumBinding
 import com.vg276.musapp.db.model.AlbumModel
+import com.vg276.musapp.thumb.ThumbCache
 
 class AlbumAdapter(
     private val clickable: (model: AlbumModel) -> Unit):
@@ -28,6 +30,25 @@ class AlbumAdapter(
 
             itemView.setOnClickListener {
                 clickable(model)
+            }
+
+            // thumbs
+            ThumbCache.load(model.thumb, model.albumId) { albumId, bitmap ->
+                Handler(itemView.context.mainLooper).post {
+                    if (albumId.isEmpty() && bitmap == null)
+                    {
+                        bind.thumb.setImageResource(R.drawable.thumb_album)
+                        return@post
+                    }
+
+                    if (albumId.isNotEmpty() && bitmap == null)
+                    {
+                        bind.thumb.setImageResource(R.drawable.thumb_album)
+                        return@post
+                    }
+
+                    bind.thumb.setImageBitmap(bitmap)
+                }
             }
         }
     }

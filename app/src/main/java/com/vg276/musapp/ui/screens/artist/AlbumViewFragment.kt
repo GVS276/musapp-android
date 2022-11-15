@@ -15,6 +15,7 @@ import com.vg276.musapp.base.FragmentSettings
 import com.vg276.musapp.core.RequestResult
 import com.vg276.musapp.databinding.FragmentAlbumBinding
 import com.vg276.musapp.db.model.AudioModel
+import com.vg276.musapp.thumb.ThumbCache
 import com.vg276.musapp.ui.adapters.AudioAdapter
 import com.vg276.musapp.utils.thenNull
 import java.lang.Float.min
@@ -116,10 +117,17 @@ class AlbumViewFragment: BaseFragment()
             // setup audio list
             it.audioList.layoutManager = LinearLayoutManager(view.context)
             it.audioList.adapter = audioAdapter
+
+            // thumbs
+            ThumbCache.getImage(albumId)?.let { bitmap ->
+                it.placeholder.setImageBitmap(bitmap)
+            }.thenNull {
+                it.placeholder.setImageResource(R.drawable.album)
+            }
         }
 
         // load if empty
-        if (audioAdapter.list.isNullOrEmpty())
+        if (audioAdapter.list.isEmpty())
         {
             binding?.emptyList?.visibility = View.VISIBLE
             binding?.emptyList?.text = getString(R.string.title_loading)
