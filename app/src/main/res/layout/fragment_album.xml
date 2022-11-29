@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/header_bar_size">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.vg276.musapp.thumb.ThumbRectangleView
                     android:id="@+id/placeholder"
                     android:layout_width="@dimen/placeholder_high_size"
                     android:layout_height="@dimen/placeholder_high_size"

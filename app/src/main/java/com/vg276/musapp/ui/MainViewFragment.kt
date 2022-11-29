@@ -16,6 +16,7 @@ import com.vg276.musapp.base.BaseFragment
 import com.vg276.musapp.databinding.FragmentMainBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.adapters.AudioAdapter
+import com.vg276.musapp.ui.dialogs.MenuDialogBuilder
 import com.vg276.musapp.utils.thenNull
 
 class MainViewFragment: BaseFragment()
@@ -35,14 +36,14 @@ class MainViewFragment: BaseFragment()
             R.id.menu_item_search ->
             {
                 (activity as? MainActivity)?.navigateFragment(
-                    R.id.SearchViewFragment, null, R.id.MainFragment, false
+                    R.id.SearchViewFragment, null, false
                 )
             }
 
             R.id.menu_item_my ->
             {
                 (activity as? MainActivity)?.navigateFragment(
-                    R.id.MyMusicFragment, null, R.id.MainFragment, false
+                    R.id.MyMusicFragment, null, false
                 )
             }
 
@@ -61,12 +62,11 @@ class MainViewFragment: BaseFragment()
         audioAdapter = AudioAdapter(AudioAdapterType.OtherAudio) { type, model ->
             if (type == AudioItemClick.Menu)
             {
-                (activity as? MainActivity)?.showMenuDialog(
-                    model,
-                    R.id.MyMusicFragment,
-                    showItemGoToArtist = true,
-                    showItemGoToAlbum = true
-                )
+                val builder = MenuDialogBuilder.Builder()
+                builder.setVisibleItemGoToArtist(true)
+                builder.setVisibleItemGoToAlbum(true)
+
+                (activity as? MainActivity)?.showMenuDialog(model, builder.build())
             } else {
                 playOrPause(model)
             }
@@ -95,7 +95,7 @@ class MainViewFragment: BaseFragment()
             bind.audioList.adapter = audioAdapter
 
             // hint
-            if (audioAdapter.list.isNullOrEmpty())
+            if (audioAdapter.list.isEmpty())
             {
                 bind.emptyList.visibility = View.VISIBLE
             } else {
@@ -127,7 +127,7 @@ class MainViewFragment: BaseFragment()
         if (requestReceiveId == requestIdentifier)
         {
             list?.let {
-                if (!it.isNullOrEmpty())
+                if (it.isNotEmpty())
                 {
                     if (this::audioAdapter.isInitialized)
                     {

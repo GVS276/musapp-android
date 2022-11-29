@@ -13,9 +13,11 @@ import android.os.*
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.view.KeyEvent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 
 interface PlayerNotificationListener {
     fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean)
@@ -25,6 +27,7 @@ interface PlayerNotificationListener {
 interface PlayerNotificationInfo {
     fun onContentArtist(): String
     fun onContentTitle(): String
+    fun onContentAlbum(): String
     fun onTrackAdded(): Boolean
     fun onReceivedAction(action: String)
 }
@@ -63,6 +66,7 @@ class PlayerNotification(private val context: Context,
 
     private val notificationManager = NotificationManagerCompat.from(context)
     private val mediaSession = MediaSessionCompat(context, MEDIA_SESSION_TAG)
+    private val mediaSessionConnector = MediaSessionConnector(mediaSession)
     private val mainHandler = Handler(Looper.getMainLooper(), this::handleMessage)
 
     private val dismissPendingIntent = createActionBroadcast(context, 100, ACTION_DISMISS)
@@ -116,6 +120,9 @@ class PlayerNotification(private val context: Context,
         mediaSession.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE)
         mediaSession.setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE)
         mediaSession.isActive = true
+
+        mediaSessionConnector.setMediaButtonEventHandler(mediaButtonEventReceiver)
+        mediaSessionConnector.setPlayer(player)
     }
 
     private fun updateSession()
@@ -123,6 +130,9 @@ class PlayerNotification(private val context: Context,
         mediaSession.setMetadata(
             MediaMetadataCompat.Builder()
                 .putLong(MediaMetadata.METADATA_KEY_DURATION, player.duration)
+                .putText(MediaMetadata.METADATA_KEY_ARTIST, info.onContentArtist())
+                .putText(MediaMetadata.METADATA_KEY_TITLE, info.onContentTitle())
+                .putText(MediaMetadata.METADATA_KEY_ALBUM, info.onContentAlbum())
                 .build()
         )
 
@@ -181,6 +191,7 @@ class PlayerNotification(private val context: Context,
             .setStyle(style)
             .setOngoing(ongoing)
             .setOnlyAlertOnce(true)
+            .setSilent(true)
 
         return builder.build()
     }
@@ -286,6 +297,33 @@ class PlayerNotification(private val context: Context,
                 if (it == ACTION_DISMISS)
                     release()
             }
+        }
+    }
+
+    private val mediaButtonEventReceiver = object: MediaSessionConnector.MediaButtonEventHandler
+    {
+        override fun onMediaButtonEvent(player: Player, mediaButtonEvent: Intent): Boolean {
+
+            val event = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT, KeyEvent::class.java)
+            } else {
+                mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT) as? KeyEvent
+            }
+
+            if (event == null)
+                return false
+
+            if (event.action == KeyEvent.ACTION_UP)
+            {
+                when(event.keyCode) {
+                    KeyEvent.KEYCODE_MEDIA_PREVIOUS -> info.onReceivedAction(ACTION_PREVIOUS)
+                    KeyEvent.KEYCODE_MEDIA_PAUSE -> info.onReceivedAction(ACTION_PAUSE)
+                    KeyEvent.KEYCODE_MEDIA_PLAY -> info.onReceivedAction(ACTION_PLAY)
+                    KeyEvent.KEYCODE_MEDIA_NEXT -> info.onReceivedAction(ACTION_NEXT)
+                }
+            }
+
+            return true
         }
     }
 }

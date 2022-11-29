@@ -2,6 +2,7 @@
 <resources>
     <color name="accentColor">#1a75ff</color>
     <color name="secondaryAccentColor">#737373</color>
+    <color name="disableAccentColor">#80ffffff</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -21,4 +22,6 @@
 
     <color name="playing_light">#D9D9D9</color>
     <color name="playing_dark">#333333</color>
+
+    <color name="player_bg_default">#646464</color> <!-- RGB: 100,100,100 -->
 </resources>

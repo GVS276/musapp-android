@@ -77,6 +77,7 @@ class PlayerService: LifecycleService()
             .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
             .build()
         player.setAudioAttributes(audioAttributes, true)
+        player.setHandleAudioBecomingNoisy(true)
         player.addListener(PlayerEventListener())
 
         db.addDelegate(libraryDelegates)
@@ -348,6 +349,10 @@ class PlayerService: LifecycleService()
 
         override fun onContentTitle(): String {
             return playedModel.value?.title ?: "Title"
+        }
+
+        override fun onContentAlbum(): String {
+            return playedModel.value?.albumTitle ?: "Album"
         }
 
         override fun onTrackAdded(): Boolean {

@@ -8,6 +8,6 @@
     <path
         android:name="path"
         android:pathData="M 28.448 17.261 L 15.552 27.739 C 14.698 28.432 14 28.1 14 27 L 14 20.062 L 4.552 27.738 C 3.698 28.432 3 28.1 3 27 L 3 5 C 3 3.9 3.698 3.568 4.552 4.261 L 14 11.937 L 14 5 C 14 3.9 14.698 3.568 15.552 4.261 L 28.448 14.739 C 29.302 15.432 29.302 16.568 28.448 17.261 Z"
-        android:fillColor="?attr/colorText"
+        android:fillColor="@color/white"
         android:strokeWidth="1"/>
 </vector>

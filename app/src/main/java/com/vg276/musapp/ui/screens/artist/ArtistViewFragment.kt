@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vg276.musapp.*
@@ -20,6 +19,7 @@ import com.vg276.musapp.db.model.ArtistModel
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.adapters.AlbumAdapter
 import com.vg276.musapp.ui.adapters.AudioAdapter
+import com.vg276.musapp.ui.dialogs.MenuDialogBuilder
 import com.vg276.musapp.utils.thenNull
 import java.lang.Float.min
 
@@ -71,12 +71,11 @@ class ArtistViewFragment: BaseFragment()
         audioAdapter = AudioAdapter(AudioAdapterType.OtherAudio) { type, model ->
             if (type == AudioItemClick.Menu)
             {
-                (activity as? MainActivity)?.showMenuDialog(
-                    model,
-                    R.id.ArtistViewFragment,
-                    showItemGoToArtist = false,
-                    showItemGoToAlbum = false
-                )
+                val builder = MenuDialogBuilder.Builder()
+                builder.setVisibleItemGoToArtist(false)
+                builder.setVisibleItemGoToAlbum(false)
+
+                (activity as? MainActivity)?.showMenuDialog(model, builder.build())
             } else {
                 playOrPause(model)
             }
@@ -92,7 +91,7 @@ class ArtistViewFragment: BaseFragment()
                 AlbumViewFragment.ARG_ACCESS_KEY to model.accessKey
             )
             (activity as? MainActivity)?.navigateFragment(
-                R.id.AlbumViewFragment, bundle, R.id.ArtistViewFragment, false
+                R.id.AlbumViewFragment, bundle, false
             )
         }
     }
@@ -111,12 +110,10 @@ class ArtistViewFragment: BaseFragment()
         binding?.let {
 
             // setup header
-            it.header.alpha = 1f
             it.headerTitle.text = fragmentSettings().title
 
             val toolbar = it.root.findViewById<LinearLayout>(R.id.toolbar)
-            val title = toolbar.findViewById<AppCompatTextView>(R.id.title)
-            title.alpha = 0f
+            it.placeholder.alpha = 1f
 
             // settings header
             it.nestedScroll.isSmoothScrollingEnabled = true
@@ -128,8 +125,7 @@ class ArtistViewFragment: BaseFragment()
                 val y =  scrollY.toFloat() - end
                 val opacity = min(1f, 1 + min(1f, y / end))
 
-                title.alpha = opacity
-                it.header.alpha = 1 - opacity
+                it.placeholder.alpha = 1 - opacity
             }
 
             // setup track list
@@ -144,7 +140,7 @@ class ArtistViewFragment: BaseFragment()
             it.tracks.setOnClickListener {
                 val bundle = bundleOf(ArtistTracksViewFragment.ARG_ARTIST_ID to artist.id)
                 (activity as? MainActivity)?.navigateFragment(
-                    R.id.ArtistTracksViewFragment, bundle, R.id.ArtistViewFragment, false
+                    R.id.ArtistTracksViewFragment, bundle, false
                 )
             }
 
@@ -154,13 +150,13 @@ class ArtistViewFragment: BaseFragment()
                     ArtistAlbumsViewFragment.ARG_ARTIST_NAME to artist.name
                 )
                 (activity as? MainActivity)?.navigateFragment(
-                    R.id.ArtistAlbumsViewFragment, bundle, R.id.ArtistViewFragment, false
+                    R.id.ArtistAlbumsViewFragment, bundle, false
                 )
             }
         }
 
         // load if empty
-        if (audioAdapter.list.isNullOrEmpty())
+        if (audioAdapter.list.isEmpty())
         {
             binding?.content?.visibility = View.GONE
             binding?.emptyList?.visibility = View.VISIBLE
@@ -241,7 +237,7 @@ class ArtistViewFragment: BaseFragment()
                     }
                     RequestResult.Success -> {
                         list?.let {
-                            if (!it.isNullOrEmpty())
+                            if (it.isNotEmpty())
                             {
                                 // hide hint and show content
                                 binding?.content?.visibility = View.VISIBLE
@@ -253,7 +249,7 @@ class ArtistViewFragment: BaseFragment()
                                 // load albums
                                 receiveAlbums()
                             }
-                            else if (audioAdapter.list.isNullOrEmpty()) {
+                            else if (audioAdapter.list.isEmpty()) {
                                 binding?.content?.visibility = View.GONE
                                 binding?.emptyList?.visibility = View.VISIBLE
                                 binding?.emptyList?.text = getString(R.string.empty_list)
@@ -271,7 +267,7 @@ class ArtistViewFragment: BaseFragment()
             activity?.runOnUiThread {
                 if (result == RequestResult.Success) {
                     list?.let {
-                        if (!it.isNullOrEmpty())
+                        if (it.isNotEmpty())
                         {
                             albumAdapter.update(it)
                         }

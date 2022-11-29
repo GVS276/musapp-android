@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/header_bar_size">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.vg276.musapp.thumb.ThumbRectangleView
                     android:id="@+id/placeholder"
                     android:layout_width="@dimen/placeholder_high_size"
                     android:layout_height="@dimen/placeholder_high_size"
@@ -72,7 +72,7 @@
                     android:id="@+id/tracks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacer_vertical"
+                    android:layout_marginVertical="@dimen/spacer_vertical"
                     android:layout_marginHorizontal="@dimen/padding_item_horizontal"
                     android:drawableEnd="@drawable/action_next"
                     android:drawablePadding="5dp"
@@ -92,7 +92,7 @@
                     android:id="@+id/albums"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacer_vertical"
+                    android:layout_marginVertical="@dimen/spacer_vertical"
                     android:layout_marginHorizontal="@dimen/padding_item_horizontal"
                     android:drawableEnd="@drawable/action_next"
                     android:drawablePadding="5dp"

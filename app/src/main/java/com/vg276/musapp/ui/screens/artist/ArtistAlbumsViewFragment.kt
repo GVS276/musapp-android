@@ -64,7 +64,7 @@ class ArtistAlbumsViewFragment: BaseFragment()
                 AlbumViewFragment.ARG_ACCESS_KEY to model.accessKey
             )
             (activity as? MainActivity)?.navigateFragment(
-                R.id.AlbumViewFragment, bundle, R.id.ArtistAlbumsViewFragment, false
+                R.id.AlbumViewFragment, bundle, false
             )
         }
     }
@@ -104,7 +104,7 @@ class ArtistAlbumsViewFragment: BaseFragment()
         }
 
         // load if empty
-        if (albumAdapter.list.isNullOrEmpty())
+        if (albumAdapter.list.isEmpty())
         {
             binding?.emptyList?.visibility = View.VISIBLE
             binding?.emptyList?.text = getString(R.string.title_loading)
@@ -173,7 +173,7 @@ class ArtistAlbumsViewFragment: BaseFragment()
                     RequestResult.Success ->
                     {
                         list?.let {
-                            if (!it.isNullOrEmpty())
+                            if (it.isNotEmpty())
                             {
                                 // hide hint
                                 binding?.emptyList?.visibility = View.GONE
@@ -184,7 +184,7 @@ class ArtistAlbumsViewFragment: BaseFragment()
                                 // Если полученный список будет maxCount, то разрешаем следующую подгрузку
                                 isAllowLoading = it.size == maxCount
                             } else {
-                                if (albumAdapter.list.isNullOrEmpty())
+                                if (albumAdapter.list.isEmpty())
                                 {
                                     binding?.emptyList?.visibility = View.VISIBLE
                                     binding?.emptyList?.text = getString(R.string.empty_list_album)

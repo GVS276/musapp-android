@@ -15,6 +15,7 @@ import com.vg276.musapp.core.RequestResult
 import com.vg276.musapp.databinding.FragmentArtistTracksBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.adapters.AudioAdapter
+import com.vg276.musapp.ui.dialogs.MenuDialogBuilder
 import com.vg276.musapp.utils.thenNull
 
 class ArtistTracksViewFragment: BaseFragment()
@@ -54,12 +55,11 @@ class ArtistTracksViewFragment: BaseFragment()
         audioAdapter = AudioAdapter(AudioAdapterType.OtherAudio) { type, model ->
             if (type == AudioItemClick.Menu)
             {
-                (activity as? MainActivity)?.showMenuDialog(
-                    model,
-                    R.id.ArtistTracksViewFragment,
-                    showItemGoToArtist = false,
-                    showItemGoToAlbum = false
-                )
+                val builder = MenuDialogBuilder.Builder()
+                builder.setVisibleItemGoToArtist(false)
+                builder.setVisibleItemGoToAlbum(false)
+
+                (activity as? MainActivity)?.showMenuDialog(model, builder.build())
             } else {
                 playOrPause(model)
             }
@@ -101,7 +101,7 @@ class ArtistTracksViewFragment: BaseFragment()
         }
 
         // load if empty
-        if (audioAdapter.list.isNullOrEmpty())
+        if (audioAdapter.list.isEmpty())
         {
             binding?.emptyList?.visibility = View.VISIBLE
             binding?.emptyList?.text = getString(R.string.title_loading)
@@ -187,7 +187,7 @@ class ArtistTracksViewFragment: BaseFragment()
                     RequestResult.Success ->
                     {
                         list?.let {
-                            if (!it.isNullOrEmpty())
+                            if (it.isNotEmpty())
                             {
                                 // hide hint
                                 binding?.emptyList?.visibility = View.GONE
@@ -198,7 +198,7 @@ class ArtistTracksViewFragment: BaseFragment()
                                 // Если полученный список будет maxCount, то разрешаем следующую подгрузку
                                 isAllowLoading = it.size == maxCount
                             } else {
-                                if (audioAdapter.list.isNullOrEmpty())
+                                if (audioAdapter.list.isEmpty())
                                 {
                                     binding?.emptyList?.visibility = View.VISIBLE
                                     binding?.emptyList?.text = getString(R.string.empty_list)

@@ -19,7 +19,6 @@ import com.vg276.musapp.models.AudioPlayerModel
 import com.vg276.musapp.thumb.ThumbCache
 import com.vg276.musapp.utils.*
 import kotlin.math.abs
-import kotlin.math.min
 
 abstract class BaseActivity: AppCompatActivity()
 {
@@ -75,7 +74,7 @@ abstract class BaseActivity: AppCompatActivity()
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
                     binding.includePlayerSheet.includePeekPlayer.peekPlayer.alpha = 1 - slideOffset
-                    binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = min(1f, if (slideOffset >= 0.1) slideOffset else 0f)
+                    binding.includePlayerSheet.includeContentPlayer.contentPlayer.alpha = slideOffset
                 }
             })
         }
@@ -157,10 +156,10 @@ abstract class BaseActivity: AppCompatActivity()
         return false
     }
 
-    private fun setAudioButtonsRes(res: Int)
+    private fun setAudioButtonsRes(resPeek: Int, resFull: Int)
     {
-        binding.includePlayerSheet.includePeekPlayer.peekPlayOrPause.setImageResource(res)
-        binding.includePlayerSheet.includeContentPlayer.playOrPause.setImageResource(res)
+        binding.includePlayerSheet.includePeekPlayer.peekPlayOrPause.setImageResource(resPeek)
+        binding.includePlayerSheet.includeContentPlayer.playOrPause.setImageResource(resFull)
     }
 
     private fun setAudioProgress(ms: Long)
@@ -193,13 +192,10 @@ abstract class BaseActivity: AppCompatActivity()
 
     private fun setPlayed(model: AudioModel)
     {
-        if (binding.playerOverlay.visibility == View.GONE)
-        {
-            binding.playerOverlay.visibility = View.VISIBLE
-            binding.includePlayerSheet.player.visibility = View.VISIBLE
-        }
-
         // ui
+        val nowPlaying = model.albumTitle.ifEmpty { "Unknown" }
+        binding.includePlayerSheet.includeContentPlayer.album.text = nowPlaying
+
         binding.includePlayerSheet.includeContentPlayer.artist.text = model.artist
         binding.includePlayerSheet.includeContentPlayer.title.text = model.title
 
@@ -208,41 +204,14 @@ abstract class BaseActivity: AppCompatActivity()
 
         binding.includePlayerSheet.includeContentPlayer.audioSeekBar.progress = 0
         binding.includePlayerSheet.includeContentPlayer.audioSeekBar.max = model.duration
-        binding.includePlayerSheet.includeContentPlayer.totalDuration.text = model.duration.toTime()
 
-        ThumbCache.getImage(model.albumId)?.let {
+        ThumbCache.getImage(baseContext, model.albumId)?.let {
+            val color = getColorFromBitmap(it)
+            binding.includePlayerSheet.includeContentPlayer.contentPlayer.setBackgroundColor(color)
             binding.includePlayerSheet.includeContentPlayer.thumb.setImageBitmap(it)
         }.thenNull {
             binding.includePlayerSheet.includeContentPlayer.thumb.setImageResource(R.drawable.thumb_big)
-        }
-
-        if (model.isExplicit)
-        {
-            binding.includePlayerSheet.includeContentPlayer.title.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.action_explicit,
-                0,
-                0,
-                0)
-
-            binding.includePlayerSheet.includePeekPlayer.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.action_explicit,
-                0,
-                0,
-                0)
-        }
-        else
-        {
-            binding.includePlayerSheet.includeContentPlayer.title.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                0,
-                0)
-
-            binding.includePlayerSheet.includePeekPlayer.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                0,
-                0)
+            binding.includePlayerSheet.includeContentPlayer.contentPlayer.setBackgroundResource(R.color.player_bg_default)
         }
 
         // viewModel
@@ -283,11 +252,16 @@ abstract class BaseActivity: AppCompatActivity()
             repeatAudio(!value)
         }
 
+        binding.includePlayerSheet.includeContentPlayer.subtract.setOnClickListener {
+            hidePlayerSheet()
+        }
+
         // listener
         binding.includePlayerSheet.includeContentPlayer.audioSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 p0?.let {
-                    binding.includePlayerSheet.includeContentPlayer.currentDuration.text = it.progress.toTime()
+                    val duration = "${it.progress.toTime()}  /  ${it.max.toTime()}"
+                    binding.includePlayerSheet.includeContentPlayer.duration.text = duration
                 }
             }
 
@@ -369,11 +343,11 @@ abstract class BaseActivity: AppCompatActivity()
 
                     }
                     PlayerCommand.Playing -> {
-                        setAudioButtonsRes(R.drawable.pause)
+                        setAudioButtonsRes(R.drawable.pause, R.drawable.pause_circle)
                         audioPlayer.setPlaying(true)
                     }
                     PlayerCommand.Paused -> {
-                        setAudioButtonsRes(R.drawable.play)
+                        setAudioButtonsRes(R.drawable.play, R.drawable.play_circle)
                         audioPlayer.setPlaying(false)
                     }
                     PlayerCommand.Finished -> {

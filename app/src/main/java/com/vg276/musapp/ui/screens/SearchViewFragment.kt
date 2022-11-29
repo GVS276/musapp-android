@@ -19,6 +19,7 @@ import com.vg276.musapp.core.RequestResult
 import com.vg276.musapp.databinding.FragmentSearchBinding
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.adapters.AudioAdapter
+import com.vg276.musapp.ui.dialogs.MenuDialogBuilder
 
 class SearchViewFragment: BaseFragment()
 {
@@ -44,12 +45,11 @@ class SearchViewFragment: BaseFragment()
         audioAdapter = AudioAdapter(AudioAdapterType.OtherAudio) { type, model ->
             if (type == AudioItemClick.Menu)
             {
-                (activity as? MainActivity)?.showMenuDialog(
-                    model,
-                    R.id.SearchViewFragment,
-                    showItemGoToArtist = true,
-                    showItemGoToAlbum = true
-                )
+                val builder = MenuDialogBuilder.Builder()
+                builder.setVisibleItemGoToArtist(true)
+                builder.setVisibleItemGoToAlbum(true)
+
+                (activity as? MainActivity)?.showMenuDialog(model, builder.build())
             } else {
                 playOrPause(model)
             }
@@ -222,7 +222,7 @@ class SearchViewFragment: BaseFragment()
                     RequestResult.Success ->
                     {
                         list?.let {
-                            if (!it.isNullOrEmpty())
+                            if (it.isNotEmpty())
                             {
                                 // hide hint
                                 binding?.emptyList?.visibility = View.GONE
@@ -233,7 +233,7 @@ class SearchViewFragment: BaseFragment()
                                 // Если полученный список будет maxCount, то разрешаем следующую подгрузку
                                 isAllowLoading = it.size == maxCount
                             } else {
-                                if (audioAdapter.list.isNullOrEmpty())
+                                if (audioAdapter.list.isEmpty())
                                 {
                                     binding?.emptyList?.visibility = View.VISIBLE
                                     binding?.emptyList?.text = getString(R.string.empty_list)

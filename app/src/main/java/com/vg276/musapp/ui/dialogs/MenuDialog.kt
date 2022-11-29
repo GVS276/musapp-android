@@ -27,9 +27,7 @@ import com.vg276.musapp.utils.toTime
 
 class MenuDialog(
     private val model: AudioModel,
-    private val currentId: Int,
-    private val showItemGoToArtist: Boolean,
-    private val showItemGoToAlbum: Boolean): DialogFragment(),
+    private val builder: MenuDialogBuilder): DialogFragment(),
     View.OnClickListener
 {
     private var binding: DialogMenuBinding? = null
@@ -106,7 +104,7 @@ class MenuDialog(
         addSwipeToClose(view, content)
 
         // artist list
-        if (!model.artists.isNullOrEmpty())
+        if (model.artists.isNotEmpty())
         {
             val artistList = artists.findViewById<RecyclerView>(R.id.artistList)
             artistList.layoutManager = LinearLayoutManager(view.context)
@@ -117,9 +115,9 @@ class MenuDialog(
         }
 
         // visible items (go to artist / go to album)
-        if (showItemGoToArtist)
+        if (builder.visibleItemGoToArtist)
         {
-            item1.visibility = when(model.artists.isNullOrEmpty()) {
+            item1.visibility = when(model.artists.isEmpty()) {
                 true -> View.GONE
                 false -> View.VISIBLE
             }
@@ -127,7 +125,7 @@ class MenuDialog(
             item1.visibility = View.GONE
         }
 
-        if (showItemGoToAlbum)
+        if (builder.visibleItemGoToAlbum)
         {
             item2.visibility = when(model.albumId.isNotEmpty()) {
                 true -> View.VISIBLE
@@ -259,7 +257,7 @@ class MenuDialog(
     {
         val bundle = bundleOf(ArtistViewFragment.ARG_ARTIST to model)
         (activity as? MainActivity)?.navigateFragment(
-            R.id.ArtistViewFragment, bundle, currentId, false
+            R.id.ArtistViewFragment, bundle, false
         )
     }
 
@@ -273,7 +271,7 @@ class MenuDialog(
             AlbumViewFragment.ARG_ACCESS_KEY to model.albumAccessKey
         )
         (activity as? MainActivity)?.navigateFragment(
-            R.id.AlbumViewFragment, bundle, currentId, false
+            R.id.AlbumViewFragment, bundle, false
         )
     }
 }

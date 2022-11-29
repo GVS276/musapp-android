@@ -30,6 +30,11 @@
     <string name="title_single">Single</string>
     <string name="title_audio_added">Added to your library</string>
     <string name="title_audio_not_added">Not added to your library</string>
+    <string name="title_now_playing">Album</string>
+    <string name="title_not_playing">Nothing is playing right now</string>
+    <string name="title_select_track">Select a track</string>
+
+    <string name="char_time">——</string>
 
     <string name="empty_list">No tracks</string>
     <string name="empty_list_album">No albums</string>

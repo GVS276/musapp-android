@@ -7,6 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -52,6 +53,22 @@ fun Window.systemBarsTransparent()
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+    }
+}
+
+fun Window.statusBarLight(value: Boolean)
+{
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        WindowCompat.getInsetsController(this, decorView).apply {
+            isAppearanceLightStatusBars = !value
+        }
+    } else {
+        decorView.systemUiVisibility =
+            if (value) {
+                decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            } else {
+                decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
     }
 }
 

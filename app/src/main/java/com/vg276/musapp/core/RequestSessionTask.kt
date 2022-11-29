@@ -27,8 +27,8 @@ class RequestSessionTask(private val urlString: String,
 {
     override fun run()
     {
-        // усыпим поток на 200 мс
-        sleep(200)
+        // усыпим поток на 250 мс
+        sleep(250)
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)

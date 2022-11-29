@@ -7,7 +7,6 @@
     android:background="?attr/colorPrimary"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone"
     app:behavior_peekHeight="@dimen/peek_player_size"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 

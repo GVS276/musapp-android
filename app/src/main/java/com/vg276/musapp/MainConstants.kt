@@ -36,3 +36,6 @@ const val INTENT_TYPE_PLAYER = 1
 const val CLIENT_ID = 2274003
 const val CLIENT_SECRET = "hHbZxrka2uZ6jB1inYsH"
 const val USER_AGENT = "VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)"
+
+const val THUMB_PATH = "/thumbs/"
+const val AUDIO_PATH = "/audios/"

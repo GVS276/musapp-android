@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import com.vg276.musapp.base.BaseActivity
 import com.vg276.musapp.db.model.AudioModel
 import com.vg276.musapp.ui.dialogs.MenuDialog
+import com.vg276.musapp.ui.dialogs.MenuDialogBuilder
 import com.vg276.musapp.utils.SettingsPreferences
 import com.vg276.musapp.utils.systemBarsTransparent
 import com.vg276.musapp.view.LoadingView
@@ -88,24 +89,25 @@ class MainActivity: BaseActivity()
 
     fun navigateFragment(toId: Int,
                          bundle: Bundle?,
-                         currentId: Int,
                          inclusive: Boolean)
     {
-        val navOptions = NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in_right)
-            .setExitAnim(R.anim.slide_out_left)
-            .setPopEnterAnim(R.anim.slide_in_left)
-            .setPopExitAnim(R.anim.slide_out_right)
-            .setPopUpTo(currentId, inclusive).build()
+        navController.currentDestination?.id?.let { currentId ->
 
-        navController.navigate(toId, bundle, navOptions, null)
+            val navOptions = NavOptions.Builder()
+                .setEnterAnim(R.anim.slide_in_right)
+                .setExitAnim(R.anim.slide_out_left)
+                .setPopEnterAnim(R.anim.slide_in_left)
+                .setPopExitAnim(R.anim.slide_out_right)
+                .setPopUpTo(currentId, inclusive).build()
+
+            navController.navigate(toId, bundle, navOptions, null)
+        }
     }
 
-    fun showMenuDialog(model: AudioModel, currentId: Int,
-                       showItemGoToArtist: Boolean, showItemGoToAlbum: Boolean)
+    fun showMenuDialog(model: AudioModel, builder: MenuDialogBuilder)
     {
         val transaction = supportFragmentManager.beginTransaction()
-        val dialog = MenuDialog(model, currentId, showItemGoToArtist, showItemGoToAlbum)
+        val dialog = MenuDialog(model, builder)
         dialog.show(transaction, null)
     }
 

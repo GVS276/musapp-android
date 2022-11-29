@@ -78,7 +78,7 @@ class AudioAdapter(
                 setPlaying(false)
 
             // thumbs
-            ThumbCache.load(model.thumb, model.albumId) { albumId, bitmap ->
+            ThumbCache.load(itemView.context, model.thumb, model.albumId) { albumId, bitmap ->
                 Handler(itemView.context.mainLooper).post {
                     if (albumId.isEmpty() && bitmap == null)
                     {
