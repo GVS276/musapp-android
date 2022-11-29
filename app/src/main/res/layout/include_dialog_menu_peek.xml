@@ -5,7 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/padding_item_vertical"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorPrimary"
+    android:animateLayoutChanges="true">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/back"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        android:src="@drawable/action_back"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/peekArtist"
@@ -18,7 +33,7 @@
         android:textStyle="bold"
         android:textColor="?attr/colorText"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintEnd_toStartOf="@+id/peekClose" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -32,7 +47,7 @@
         android:textSize="@dimen/text_sub_item_size"
         android:textColor="?attr/colorText"
         app:layout_constraintTop_toBottomOf="@+id/peekArtist"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintEnd_toStartOf="@+id/peekClose"/>
 
     <androidx.appcompat.widget.AppCompatImageButton

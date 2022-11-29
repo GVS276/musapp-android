@@ -5,15 +5,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.vg276.musapp.MainActivity
 import com.vg276.musapp.R
 import com.vg276.musapp.databinding.DialogMenuBinding
@@ -34,9 +28,6 @@ class MenuDialog(
 
     private val db = DBController.shared
     private var isAudioAdded = false
-
-    private lateinit var artists: ConstraintLayout
-    private lateinit var content: LinearLayout
 
     private var firstY: Float = 0f
     private var currentPos: Float = 0f
@@ -61,54 +52,43 @@ class MenuDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val binding = binding ?: return
+
         // ui
-        artists = view.findViewById(R.id.artists)
-        artists.visibility = View.GONE
-
-        content = view.findViewById(R.id.content)
-        content.visibility = View.VISIBLE
-
-        val back = artists.findViewById<AppCompatImageButton>(R.id.back)
-        val item0 = content.findViewById<AppCompatButton>(R.id.item0)
-        val item1 = content.findViewById<AppCompatButton>(R.id.item1)
-        val item2 = content.findViewById<AppCompatButton>(R.id.item2)
-
-        val peekArtist = content.findViewById<AppCompatTextView>(R.id.peekArtist)
-        val peekTitle = content.findViewById<AppCompatTextView>(R.id.peekTitle)
-        val peekClose = content.findViewById<AppCompatImageButton>(R.id.peekClose)
+        binding.includeArtistsDialog.artists.visibility = View.GONE
+        binding.includeContentDialog.content.visibility = View.VISIBLE
 
         val str = "${model.title} • ${model.duration.toTime()}"
-        peekArtist.text = model.artist
-        peekTitle.text = str
+        binding.includePeekDialog.peekArtist.text = model.artist
+        binding.includePeekDialog.peekTitle.text = str
 
         if (model.isExplicit)
-            peekTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePeekDialog.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.action_explicit,
                 0,
                 0,
                 0)
         else
-            peekTitle.setCompoundDrawablesWithIntrinsicBounds(
+            binding.includePeekDialog.peekTitle.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
                 0,
                 0)
 
-        back.setOnClickListener(this)  // back
-        item0.setOnClickListener(this) // add / delete
-        item1.setOnClickListener(this) // go to artist
-        item2.setOnClickListener(this) // go to album
-        peekClose.setOnClickListener(this)
+        binding.includeContentDialog.item0.setOnClickListener(this) // add / delete
+        binding.includeContentDialog.item1.setOnClickListener(this) // go to artist
+        binding.includeContentDialog.item2.setOnClickListener(this) // go to album
+        binding.includePeekDialog.back.setOnClickListener(this)  // back
+        binding.includePeekDialog.peekClose.setOnClickListener(this)
 
         // swipe to close dialog
-        addSwipeToClose(view, content)
+        addSwipeToClose(view, binding.container)
 
         // artist list
         if (model.artists.isNotEmpty())
         {
-            val artistList = artists.findViewById<RecyclerView>(R.id.artistList)
-            artistList.layoutManager = LinearLayoutManager(view.context)
-            artistList.adapter = ArtistAdapter(model.artists) { model ->
+            binding.includeArtistsDialog.artistList.layoutManager = LinearLayoutManager(view.context)
+            binding.includeArtistsDialog.artistList.adapter = ArtistAdapter(model.artists) { model ->
                 dismiss()
                 goToArtist(model)
             }
@@ -117,22 +97,22 @@ class MenuDialog(
         // visible items (go to artist / go to album)
         if (builder.visibleItemGoToArtist)
         {
-            item1.visibility = when(model.artists.isEmpty()) {
+            binding.includeContentDialog.item1.visibility = when(model.artists.isEmpty()) {
                 true -> View.GONE
                 false -> View.VISIBLE
             }
         } else {
-            item1.visibility = View.GONE
+            binding.includeContentDialog.item1.visibility = View.GONE
         }
 
         if (builder.visibleItemGoToAlbum)
         {
-            item2.visibility = when(model.albumId.isNotEmpty()) {
+            binding.includeContentDialog.item2.visibility = when(model.albumId.isNotEmpty()) {
                 true -> View.VISIBLE
                 false -> View.GONE
             }
         } else {
-            item2.visibility = View.GONE
+            binding.includeContentDialog.item2.visibility = View.GONE
         }
 
 
@@ -142,15 +122,15 @@ class MenuDialog(
                 isAudioAdded = it != null
                 if (isAudioAdded)
                 {
-                    item0.setText(R.string.title_delete_library)
-                    item0.setCompoundDrawablesWithIntrinsicBounds(
+                    binding.includeContentDialog.item0.setText(R.string.title_delete_library)
+                    binding.includeContentDialog.item0.setCompoundDrawablesWithIntrinsicBounds(
                         0,
                         0,
                         R.drawable.action_delete,
                         0)
                 } else {
-                    item0.setText(R.string.title_add_library)
-                    item0.setCompoundDrawablesWithIntrinsicBounds(
+                    binding.includeContentDialog.item0.setText(R.string.title_add_library)
+                    binding.includeContentDialog.item0.setCompoundDrawablesWithIntrinsicBounds(
                         0,
                         0,
                         R.drawable.action_add,
@@ -165,8 +145,9 @@ class MenuDialog(
         {
             R.id.back ->
             {
-                content.visibility = View.VISIBLE
-                artists.visibility = View.GONE
+                binding?.includeContentDialog?.content?.visibility = View.VISIBLE
+                binding?.includeArtistsDialog?.artists?.visibility = View.GONE
+                binding?.includePeekDialog?.back?.visibility = View.GONE
             }
 
             R.id.item0 ->
@@ -182,8 +163,9 @@ class MenuDialog(
             {
                 if (model.artists.size > 1)
                 {
-                    artists.visibility = View.VISIBLE
-                    content.visibility = View.GONE
+                    binding?.includePeekDialog?.back?.visibility = View.VISIBLE
+                    binding?.includeArtistsDialog?.artists?.visibility = View.VISIBLE
+                    binding?.includeContentDialog?.content?.visibility = View.GONE
                 } else {
                     dismiss()
                     goToArtist(model.artists[0])
